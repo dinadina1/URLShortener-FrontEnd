@@ -40,6 +40,7 @@ const History = () => {
                 <>
                   <h1>Analytics</h1>
 
+                  <div className='overflow-auto'>
                   <table className="table table-striped border">
                     <thead>
                       <tr className='text-center'>
@@ -59,6 +60,7 @@ const History = () => {
                       }
                     </tbody>
                   </table>
+                  </div>
                 </>
               ) : (
                 <h5 className='pt-5 text-center'>There is no analytics.</h5>
