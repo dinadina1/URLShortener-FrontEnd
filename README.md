@@ -35,7 +35,7 @@
 # Installation
 ### Clone the repository:
 ```
- git clone 
+ git clone https://github.com/dinadina1/URLShortener-FrontEnd.git
 ```
 
 #### To start the project, use the following command:
@@ -52,4 +52,12 @@ npm install
 
 ### Screenshots:
 ![image](https://github.com/dinadina1/URLShortener-FrontEnd/assets/123656660/3bc2b9c1-047c-4130-9692-e5a6b7eab77f)
+![image](https://github.com/dinadina1/URLShortener-FrontEnd/assets/123656660/a708cf4c-ac18-49fb-937e-334313f4432c)
+![image](https://github.com/dinadina1/URLShortener-FrontEnd/assets/123656660/842cbb03-7ef6-4c13-a557-ce8ccf40c3a9)
+![image](https://github.com/dinadina1/URLShortener-FrontEnd/assets/123656660/acfb5314-854c-4587-b449-0d0c41f6dea4)
+![image](https://github.com/dinadina1/URLShortener-FrontEnd/assets/123656660/08f93896-1563-4dc0-9521-f7b4962304bd)
 
+![image](https://github.com/dinadina1/URLShortener-FrontEnd/assets/123656660/27f42fc1-320e-46c6-b3b6-778eae8bd676)
+
+![image](https://github.com/dinadina1/URLShortener-FrontEnd/assets/123656660/903b5a64-d7ec-406e-9fe7-9b3677d74f9c)
+![image](https://github.com/dinadina1/URLShortener-FrontEnd/assets/123656660/74d44bf6-5001-4b2b-8e3e-0a0c3bd6624c)
