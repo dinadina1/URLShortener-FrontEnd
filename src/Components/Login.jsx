@@ -53,12 +53,6 @@ const Login = () => {
                     localStorage.setItem('token', response.data.token);
 
                     navigate('/dashboard');
-
-                    // navigate to login route
-                    // setTimeout(() => {
-                    //     navigate('/dashboard');
-                    //     alert("Logged in successfully")
-                    // }, 1000);
                 } else {
                     alert("Login failed");
                 }

@@ -28,7 +28,6 @@ const DashboardNav = () => {
 
       // navigate to home route
       navigate('/');
-      alert("Logged out successfully")
 
     } catch (err) {
       alert(err.response.data.message);
