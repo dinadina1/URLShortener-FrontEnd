@@ -52,13 +52,13 @@ const Login = () => {
                     // set token in localstorage
                     localStorage.setItem('token', response.data.token);
 
-
+                    navigate('/dashboard');
 
                     // navigate to login route
-                    setTimeout(() => {
-                        navigate('/dashboard');
-                        alert("Logged in successfully")
-                    }, 1000);
+                    // setTimeout(() => {
+                    //     navigate('/dashboard');
+                    //     alert("Logged in successfully")
+                    // }, 1000);
                 } else {
                     alert("Login failed");
                 }
