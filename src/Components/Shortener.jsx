@@ -20,6 +20,9 @@ const Shortener = () => {
   // state for long url
   const [longUrl, setLongUrl] = useState('');
 
+  // State for isBtnLoading
+  const [isBtnLoading, setIsBtnLoading] = useState(false);
+
   // state for short
   const [shortUrl, setShortUrl] = useState('');
 
@@ -30,16 +33,23 @@ const Shortener = () => {
     },
     validate,
     onSubmit: async (values) => {
+      try {
+        setIsBtnLoading(true);
 
-      // call api to generate short url
-      const response = await userServices.generateShortUrl(values);
+        // call api to generate short url
+        const response = await userServices.generateShortUrl(values);
 
-      // update state values
-      setLongUrl(values.longUrl);
-      setShortUrl(response.data.message);
+        // update state values
+        setIsBtnLoading(false);
+        setLongUrl(values.longUrl);
+        setShortUrl(response.data.message);
 
-      // clear values
-      formik.resetForm();
+        // clear values
+        formik.resetForm();
+      } catch (err) {
+        setIsBtnLoading(false);
+        alert(err.response.data.message);
+      }
 
     }
   })
@@ -69,7 +79,17 @@ const Shortener = () => {
             ) : null
           }
 
-          <button type="button" className="btn btn-secondary mt-3 " onClick={formik.handleSubmit}>Generate</button>
+          {
+            isBtnLoading ? (
+              <button type="submit" className="btn btn-secondary mt-3 ps-5 pe-5" onClick={formik.handleSubmit}>
+                <span className="spinner-border" role="status" style={{ height: "23px", width: "23px" }}>
+                  <span className="visually-hidden">Loading...</span>
+                </span>
+              </button>
+            ) : (
+              <button type="submit" className="btn btn-secondary mt-3 " onClick={formik.handleSubmit}>Generate</button>
+            )
+          }
         </form>
 
         {

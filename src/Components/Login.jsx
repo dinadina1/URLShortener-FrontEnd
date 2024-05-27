@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 // import required packages
 import { useFormik } from 'formik';
 import { Link, useNavigate } from 'react-router-dom'
@@ -30,8 +31,22 @@ const validate = values => {
 
 const Login = () => {
 
+    // State for isBtnLoading
+    const [isBtnLoading, setIsBtnLoading] = useState(false);
+
+    // State for error
+    const [isError, setIsError] = useState(null);
+
     // call useNavigate hook to navigate to different routes
     const navigate = useNavigate();
+
+    // useEffect for checking if user is logged in
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            return navigate('/');
+        }
+    }, []);
 
     // formik validation
     const formik = useFormik({
@@ -43,6 +58,9 @@ const Login = () => {
         onSubmit: async (values) => {
 
             try {
+                setIsBtnLoading(true);
+                setIsError(null);
+
                 // api call to signup user
                 const response = await userServices.login(values);
 
@@ -52,23 +70,25 @@ const Login = () => {
                     // set token in localstorage
                     localStorage.setItem('token', response.data.token);
 
-                    navigate('/dashboard');
-                } else {
-                    alert("Login failed");
+                    // navigate to home page
+                    navigate('/');
+                    setIsBtnLoading(false);
+                    formik.resetForm();
                 }
             } catch (err) {
-                alert(err.response.data.message);
+                setIsBtnLoading(false);
+                setIsError("Invalid Credentials");
             }
         }
     });
 
     return (
         <>
-            <div class="alert alert-primary alert-dismissible fade show" role="alert">
+            <div className="alert alert-primary alert-dismissible fade show" role="alert">
                 <strong>Demo Credentials</strong> <br />
                 <b>Email:</b> hacker@gmail.com
                 <b>  Password:</b> 123456
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
             <div className="form-container">
                 <div className="card">
@@ -124,9 +144,23 @@ const Login = () => {
                             ) : null
                         }
 
+                        {/* display message if any errors occured */}
+                        {
+                            isError && <div className='text-danger'>{isError}</div>
+                        }
                     </form>
 
-                    <button type="submit" className="login_btn" onClick={formik.handleSubmit}>Login</button>
+                    {
+                        isBtnLoading ? (
+                            <button type="submit" className="login_btn" onClick={formik.handleSubmit}>
+                                <span className="spinner-border p-0" role="status" style={{ height: "23px", width: "23px" }}>
+                                    <span className="visually-hidden">Loading...</span>
+                                </span>
+                            </button>
+                        ) : (
+                            <button type="submit" className="login_btn" onClick={formik.handleSubmit}>Login</button>
+                        )
+                    }
                     <Link to={"/forgot-password"} className="fp">Forgot password?</Link>
 
                 </div>

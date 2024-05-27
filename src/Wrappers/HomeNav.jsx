@@ -1,7 +1,21 @@
 // import required packages
-import { Link, Outlet } from 'react-router-dom'
+import { useEffect } from 'react'
+import { Link, Outlet, useNavigate } from 'react-router-dom'
 
 const HomeNav = () => {
+
+  // define useNavigate
+  const navigate = useNavigate();
+
+  // redirect to home page if user is logged in
+  useEffect(() => {
+
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/dashboard");
+    }
+  }, []);
+
   return (
     <>
       <nav className="navbar navbar-expand-lg">

@@ -14,9 +14,8 @@ const History = () => {
     const getAnalytics = async () => {
       try {
         const response = await userServices.getAnalytics();
-        console.log(response.data);
 
-        // updata state
+        // update state
         setAnalytics(response.data);
         setIsLoading(true);
 
@@ -41,25 +40,25 @@ const History = () => {
                   <h1>Analytics</h1>
 
                   <div className='overflow-auto'>
-                  <table className="table table-striped border">
-                    <thead>
-                      <tr className='text-center'>
-                        <th>S.No</th>
-                        <th>ShortURL</th>
-                        <th>OriginalURL</th>
-                        <th>Clicks</th>
-                        <th className='w-25'>CreatedOn</th>
-                        <th>CreatedAt</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {
-                        analytics.map((item, index) => (
-                          <HistoryCard key={index} data={item} sNo={index + 1} />
-                        ))
-                      }
-                    </tbody>
-                  </table>
+                    <table className="table table-striped border">
+                      <thead>
+                        <tr className='text-center'>
+                          <th>S.No</th>
+                          <th>ShortURL</th>
+                          <th>OriginalURL</th>
+                          <th>Clicks</th>
+                          <th className='w-25'>CreatedOn</th>
+                          <th>CreatedAt</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {
+                          analytics.map((item, index) => (
+                            <HistoryCard key={index} data={item} sNo={index + 1} />
+                          ))
+                        }
+                      </tbody>
+                    </table>
                   </div>
                 </>
               ) : (
@@ -68,7 +67,13 @@ const History = () => {
             }
           </div>
         ) : (
-          <h5 className='pt-5 text-center'>Loading...</h5>
+          <div className="container" style={{ height: "90vh" }}>
+            <div className="d-flex justify-content-center pt-5">
+              <div className="spinner-border" role="status">
+                <span className="visually-hidden">Loading...</span>
+              </div>
+            </div>
+          </div>
         )
       }
     </>

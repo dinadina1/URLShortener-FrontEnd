@@ -1,3 +1,4 @@
+import { useState } from 'react';
 // import required packages
 import { useFormik } from "formik"
 import { RiErrorWarningLine } from "react-icons/ri";
@@ -37,6 +38,12 @@ const validate = values => {
 
 const ResetPassword = () => {
 
+  // State for isBtnLoading
+  const [isBtnLoading, setIsBtnLoading] = useState(false);
+
+  // State for error
+  const [isError, setIsError] = useState(null);
+
   // define useNavigate hook
   const navigate = useNavigate();
 
@@ -50,18 +57,24 @@ const ResetPassword = () => {
     validate,
     onSubmit: async (values) => {
       try {
+        setIsBtnLoading(true);
+        setIsError(null);
+
         // api call to reset password
         const response = await userServices.resetPassword(values);
         alert(response.data.message);
 
         // navigate to home
-        navigate('/');
+        navigate('/login');
 
         // reset form
         formik.resetForm();
+        setIsBtnLoading(false);
+        setIsError(null);
+
       } catch (err) {
-        console.log(err);
-        alert(err.response.data.message);
+        setIsBtnLoading(false);
+        setIsError(err.response.data.message);
       }
     }
   })
@@ -137,7 +150,21 @@ const ResetPassword = () => {
               ) : null
             }
 
-            <button type="submit" className="login_btn" onClick={formik.handleSubmit}>Save</button>
+            {
+              isError && <div className='text-danger'>{isError}</div>
+            }
+
+            {
+              isBtnLoading ? (
+                <button type="submit" className="login_btn" onClick={formik.handleSubmit}>
+                  <span className="spinner-border p-0" role="status" style={{ height: "23px", width: "23px" }}>
+                    <span className="visually-hidden">Loading...</span>
+                  </span>
+                </button>
+              ) : (
+                <button type="submit" className="login_btn" onClick={formik.handleSubmit}>Save</button>
+              )
+            }
           </form>
 
         </div>

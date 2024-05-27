@@ -3,6 +3,7 @@ import { useFormik } from 'formik';
 import { Link, useNavigate } from 'react-router-dom'
 import { RiErrorWarningLine } from "react-icons/ri";
 import userServices from '../../Services/userService';
+import { useState } from 'react';
 
 
 // validate form values
@@ -45,6 +46,12 @@ const validate = values => {
 
 const Signup = () => {
 
+    // State for isBtnLoading
+    const [isBtnLoading, setIsBtnLoading] = useState(false);
+
+    // State for error
+    const [isError, setIsError] = useState(null);
+
     // call useNavigate hook to navigate to different routes
     const navigate = useNavigate();
 
@@ -59,18 +66,24 @@ const Signup = () => {
         validate,
         onSubmit: async (values) => {
 
-            // api call to signup user
-            const response = await userServices.register(values);
+            setIsBtnLoading(true);
+            setIsError(null);
             try {
+                // api call to signup user
+                const response = await userServices.register(values);
+
                 // check if user is created successfully
                 if (response) {
-                    alert("Registration success")
 
                     // navigate to login route
                     navigate('/login');
+                    setIsBtnLoading(false);
+                    formik.resetForm();
+                    alert("Registration success")
                 }
             } catch (err) {
-                alert(err.response.data.message);
+                setIsBtnLoading(false);
+                setIsError(err.response.data.message);
             }
         }
     })
@@ -165,9 +178,27 @@ const Signup = () => {
                             </div>
                         ) : null}
 
-                    </form>
+                        {
+                            isError && (
+                                <div className="text-danger mb-2">
+                                    {isError}
+                                </div>
+                            )
+                        }
 
-                    <button type="submit" className="login_btn" onClick={formik.handleSubmit}>Singup</button>
+                    </form>
+                    {
+                        isBtnLoading ? (
+                            <button type="submit" className="login_btn" onClick={formik.handleSubmit}>
+                                <span className="spinner-border p-0" role="status" style={{ height: "23px", width: "23px" }}>
+                                    <span className="visually-hidden">Loading...</span>
+                                </span>
+                            </button>
+                        ) : (
+                            <button type="submit" className="login_btn" onClick={formik.handleSubmit}>Singup</button>
+                        )
+                    }
+
                 </div>
             </div>
         </>

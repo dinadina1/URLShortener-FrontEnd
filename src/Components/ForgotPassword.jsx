@@ -1,3 +1,4 @@
+import { useState } from 'react';
 // import required packages
 import { useNavigate } from 'react-router-dom';
 import { useFormik } from 'formik'
@@ -24,6 +25,12 @@ const validate = values => {
 
 const forgotPassword = () => {
 
+    // State for isError
+    const [isError, setIsError] = useState(null);
+
+    // State for isLoading
+    const [isLoading, setIsLoading] = useState(false);
+
     // define useNavigate hook
     const navigate = useNavigate();
 
@@ -35,16 +42,20 @@ const forgotPassword = () => {
         validate,
         onSubmit: async (values) => {
             try {
+                setIsError(null);
+                setIsLoading(true);
+
                 // call api for send email because forgot password
                 const response = await userServices.forgotPassword(values);
 
+                setIsLoading(false);
                 alert(response.data.message);
                 navigate('/reset-password');
                 formik.resetForm();
             }
             catch (error) {
-                console.log(error);
-                alert(error.response.data.message);
+                setIsLoading(false);
+                setIsError(error.response.data.message);
             }
         }
     })
@@ -78,7 +89,22 @@ const forgotPassword = () => {
                             ) : null
                         }
 
-                        <button type="submit" className="login_btn" onClick={formik.handleSubmit}>Submit</button>
+                        {/* display message if any errors occured */}
+                        {
+                            isError && <div className='text-danger'>{isError}</div>
+                        }
+
+                        {
+                            isLoading ? (
+                                <button type="submit" className="login_btn" onClick={formik.handleSubmit}>
+                                    <span className="spinner-border p-0" role="status" style={{ height: "23px", width: "23px" }}>
+                                        <span className="visually-hidden">Loading...</span>
+                                    </span>
+                                </button>
+                            ) : (
+                                <button type="submit" className="login_btn" onClick={formik.handleSubmit}>Submit</button>
+                            )
+                        }
                     </form>
                 </div>
             </div>
